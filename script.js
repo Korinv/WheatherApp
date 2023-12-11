@@ -1,5 +1,6 @@
 "use strict";
 
+// All HTML objects that will be needed
 const localization = document.querySelector(".localization");
 const weather = document.querySelector(".weather");
 const temperature = document.querySelector(".temperature");
@@ -18,21 +19,25 @@ const btnSave = document.querySelector(".btn__save");
 // Geolocalization
 function _getPosition() {
   if (navigator.geolocation) {
+    // Get position from browser
     navigator.geolocation.getCurrentPosition(
       async function (res) {
         const { latitude } = res.coords;
         const { longitude } = res.coords;
+        // Getting data from API
         const respo = await fetch(
           `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${"051b5e361d8b50d5967df82e4846606d"}&units=${
             inputUni.value
           }&lang=${inputLang.value}`
         );
-        console.log(respo);
+        // Converting data from JSON to JavaScript Object
         const data = await respo.json();
         // await console.log(data);
+        // Changin data on page
         await _changePage(data);
       },
       function () {
+        // If getting postion is failed
         localization.textContent = "Could not get your position";
         localization.style.color = "red";
       }
@@ -40,6 +45,7 @@ function _getPosition() {
   }
 }
 
+// Function to change data on page
 function _changePage(data) {
   localization.textContent = data.name;
   localization.style.color = "greenyellow";
@@ -71,13 +77,13 @@ function _changePage(data) {
       temperature.style.color = "red";
     }
   }
-
   temperature.style.fontSize = "64px";
   weather.textContent = data.weather[0].description;
   weather.style.fontSize = "32px";
 }
 
-function _form(e) {
+// Adding all event listeners to HTML Objects
+function _form() {
   formCity.addEventListener("submit", submitCity.bind(this));
   formLL.addEventListener("submit", submitLL.bind(this));
   btnCity.addEventListener("click", submitCity.bind(this));
@@ -85,22 +91,23 @@ function _form(e) {
   btnSave.addEventListener("click", changed.bind(this));
 }
 
+// This 3 functions are only to not reset page while clicking on buttons
 function submitCity(e) {
   e.preventDefault();
   _dataFormCity();
 }
-
 function submitLL(e) {
   e.preventDefault();
   _dataFormLL();
 }
-
 function changed(e) {
   e.preventDefault();
   _getPosition();
 }
 
+// If entered wrong data
 function _noCityOrLL(data) {
+  // Wrong city
   if (data.cod === "404") {
     temperature.style.color = "red";
     temperature.textContent =
@@ -108,7 +115,9 @@ function _noCityOrLL(data) {
     temperature.style.fontSize = "64px";
     weather.textContent = "Try again";
     localization.textContent = "";
-  } else if (data.cod === "400") {
+  }
+  // Wrong Longitude or Latitude
+  else if (data.cod === "400") {
     temperature.style.color = "red";
     temperature.textContent =
       data.message.charAt(0).toUpperCase() + data.message.slice(1);
@@ -116,9 +125,11 @@ function _noCityOrLL(data) {
     weather.textContent = "Try again";
     localization.textContent = "";
   }
+  // Emptying forms
   _clearForm();
 }
 
+// Getting data from API for City name
 async function _dataFormCity() {
   console.log(inputCity.value);
   const respo = await fetch(
@@ -135,6 +146,7 @@ async function _dataFormCity() {
   _clearForm();
 }
 
+// Getting data from API for Longitude and Latitude
 async function _dataFormLL() {
   const respo = await fetch(
     `https://api.openweathermap.org/data/2.5/weather?lat=${
@@ -150,10 +162,12 @@ async function _dataFormLL() {
   _clearForm();
 }
 
+// Clearing forms
 function _clearForm() {
   inputCity.value = inputLat.value = inputLng.value = "";
 }
 
+// Initializing all functions
 _getPosition();
 _clearForm();
 _form();
