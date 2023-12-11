@@ -10,7 +10,7 @@
   justify-content: space-between;
   height: 100vh;
   background-color: black;
-  font-family: "Press Start 2P";
+  font-family: "Press Start 2P", sans-serif;
   color: greenyellow;
 }
 
@@ -19,6 +19,32 @@
   text-align: center;
   padding-top: 10px;
   font-size: 80px;
+}
+
+.form__langUni {
+  font-size: 20px;
+  margin-top: 15px;
+  text-align: center;
+}
+
+.form__lang--input,
+.form__uni--input {
+  cursor: pointer;
+  font-size: 20px;
+  background-color: greenyellow;
+  border: none;
+  color: black;
+  font-family: inherit;
+  padding: 5px;
+  width: 170px;
+}
+
+option {
+  font-family: "Press Start 2P", sans-serif;
+}
+
+.form__lang--input {
+  margin-right: 25px;
 }
 
 .container {

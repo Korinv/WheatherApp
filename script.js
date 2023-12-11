@@ -11,6 +11,9 @@ const inputLat = document.querySelector(".form__input--lat");
 const inputLng = document.querySelector(".form__input--lng");
 const btnCity = document.querySelector(".btn__city");
 const btnLatLng = document.querySelector(".btn__latlng");
+const inputLang = document.querySelector(".form__lang--input");
+const inputUni = document.querySelector(".form__uni--input");
+const btnSave = document.querySelector(".btn__save");
 
 // Geolocalization
 function _getPosition() {
@@ -20,14 +23,18 @@ function _getPosition() {
         const { latitude } = res.coords;
         const { longitude } = res.coords;
         const respo = await fetch(
-          `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${"051b5e361d8b50d5967df82e4846606d"}&units=metric&lang=pl`
+          `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${"051b5e361d8b50d5967df82e4846606d"}&units=${
+            inputUni.value
+          }&lang=${inputLang.value}`
         );
+        console.log(respo);
         const data = await respo.json();
         // await console.log(data);
         await _changePage(data);
       },
       function () {
-        alert("Could not get your position");
+        localization.textContent = "Could not get your position";
+        localization.style.color = "red";
       }
     );
   }
@@ -35,19 +42,36 @@ function _getPosition() {
 
 function _changePage(data) {
   localization.textContent = data.name;
+  localization.style.color = "greenyellow";
   const temp = Math.round(data.main.temp);
-  temperature.textContent = `${temp}°C`;
-  if (temp <= -20) {
-    temperature.style.color = "white";
-  } else if (temp <= 0) {
-    temperature.style.color = "aquamarine";
-  } else if (temp <= 20) {
-    temperature.style.color = "greenyellow";
-  } else if (temp <= 40) {
-    temperature.style.color = "yellow";
+  if (inputUni.value === "metric") {
+    temperature.textContent = `${temp}°C`;
+    if (temp <= -20) {
+      temperature.style.color = "white";
+    } else if (temp <= 0) {
+      temperature.style.color = "aquamarine";
+    } else if (temp <= 20) {
+      temperature.style.color = "greenyellow";
+    } else if (temp <= 40) {
+      temperature.style.color = "yellow";
+    } else {
+      temperature.style.color = "red";
+    }
   } else {
-    temperature.style.color = "red";
+    temperature.textContent = `${temp}°F`;
+    if (temp <= -4) {
+      temperature.style.color = "white";
+    } else if (temp <= 32) {
+      temperature.style.color = "aquamarine";
+    } else if (temp <= 68) {
+      temperature.style.color = "greenyellow";
+    } else if (temp <= 104) {
+      temperature.style.color = "yellow";
+    } else {
+      temperature.style.color = "red";
+    }
   }
+
   temperature.style.fontSize = "64px";
   weather.textContent = data.weather[0].description;
   weather.style.fontSize = "32px";
@@ -58,6 +82,7 @@ function _form(e) {
   formLL.addEventListener("submit", submitLL.bind(this));
   btnCity.addEventListener("click", submitCity.bind(this));
   btnLatLng.addEventListener("click", submitLL.bind(this));
+  btnSave.addEventListener("click", changed.bind(this));
 }
 
 function submitCity(e) {
@@ -70,11 +95,26 @@ function submitLL(e) {
   _dataFormLL();
 }
 
+function changed(e) {
+  e.preventDefault();
+  _getPosition();
+}
+
 function _noCityOrLL(data) {
   if (data.cod === "404") {
-    alert(data.message);
+    temperature.style.color = "red";
+    temperature.textContent =
+      data.message.charAt(0).toUpperCase() + data.message.slice(1);
+    temperature.style.fontSize = "64px";
+    weather.textContent = "Try again";
+    localization.textContent = "";
   } else if (data.cod === "400") {
-    alert(data.message);
+    temperature.style.color = "red";
+    temperature.textContent =
+      data.message.charAt(0).toUpperCase() + data.message.slice(1);
+    temperature.style.fontSize = "64px";
+    weather.textContent = "Try again";
+    localization.textContent = "";
   }
   _clearForm();
 }
@@ -84,7 +124,9 @@ async function _dataFormCity() {
   const respo = await fetch(
     `https://api.openweathermap.org/data/2.5/weather?q=${
       inputCity.value
-    }&appid=${"051b5e361d8b50d5967df82e4846606d"}&units=metric&lang=pl`
+    }&appid=${"051b5e361d8b50d5967df82e4846606d"}&units=${
+      inputUni.value
+    }&lang=${inputLang.value}`
   );
   const data = await respo.json();
   await _noCityOrLL(data);
@@ -97,9 +139,9 @@ async function _dataFormLL() {
   const respo = await fetch(
     `https://api.openweathermap.org/data/2.5/weather?lat=${
       inputLat.value
-    }&lon=${
-      inputLng.value
-    }&appid=${"051b5e361d8b50d5967df82e4846606d"}&units=metric&lang=pl`
+    }&lon=${inputLng.value}&appid=${"051b5e361d8b50d5967df82e4846606d"}&units=${
+      inputUni.value
+    }&lang=${inputLang.value}`
   );
   const data = await respo.json();
   await _noCityOrLL(data);
