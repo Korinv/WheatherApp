@@ -1,0 +1,88 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+  background-color: black;
+  font-family: "Press Start 2P";
+  color: greenyellow;
+}
+
+.header {
+  color: aqua;
+  text-align: center;
+  padding-top: 10px;
+  font-size: 80px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  font-size: 16px;
+  height: 100%;
+}
+
+.localization {
+  font-size: 48px;
+}
+
+.form__city {
+  padding-top: 10vh;
+}
+
+.form__box {
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.form__input {
+  font-size: 20px;
+  background-color: greenyellow;
+  border: none;
+  color: black;
+  font-family: inherit;
+  padding: 5px;
+  width: 530px;
+}
+
+.form__latlng input {
+  width: 120px;
+}
+
+.form__input:focus {
+  outline: none;
+}
+
+.btn {
+  margin-left: 25px;
+  background-color: greenyellow;
+  border: none;
+  color: black;
+  font-size: 20px;
+  font-family: inherit;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: black;
+  color: greenyellow;
+}
+
+.footer {
+  text-align: center;
+  padding-bottom: 10px;
+}

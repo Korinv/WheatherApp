@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pogoda</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="body">
+    <header class="header">Wheather app</header>
+    <div class="container">
+      <h1 class="localization">Loading data...</h1>
+      <h2 class="temperature">Give permision to your localization</h2>
+      <h2 class="weather">or enter City/Coordinates</h2>
+      <form class="form form__city">
+        <div class="form__box">
+          <label>City</label>
+          <input class="form__input form__input--city" type="text" />
+          <button class="btn btn__city">Search</button>
+        </div>
+      </form>
+      <form class="form form__ll">
+        <div class="form__box form__latlng">
+          <label>Latitude</label>
+          <input class="form__input form__input--lat" type="text" />
+          <label>Longitude</label>
+          <input class="form__input form__input--lng" type="text" />
+          <button class="btn btn__latlng">Search</button>
+        </div>
+      </form>
+    </div>
+    <footer class="footer">By Krzysztof Kostanecki</footer>
+    <script src="script.js"></script>
+  </body>
+</html>
